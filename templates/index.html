@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MNIST Digit Classifier</title>
+</head>
+<body>
+    <h1>Upload an image of a digit (0-9)</h1>
+    <form action="/predict" method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit">Predict</button>
+    </form>
+    <h2 id="result"></h2>
+</body>
+<script>
+    document.querySelector('form').onsubmit = async (e) => {
+        e.preventDefault();
+        let formData = new FormData(e.target);
+        let response = await fetch('/predict', {
+            method: 'POST',
+            body: formData
+        });
+        let result = await response.json();
+        document.getElementById('result').textContent = 'Predicted Digit: ' + result.digit;
+    };
+</script>
+</html>
